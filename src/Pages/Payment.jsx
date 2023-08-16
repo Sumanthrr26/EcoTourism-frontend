@@ -44,18 +44,14 @@ const Payment = () => {
 
     // Send data to backend /booking route
     try {
-      const modifiedSelectedPackage = {
-        title: selectedPackage.title,
-        price: selectedPackage.price,
-      };
-
       const response = await fetch("http://localhost:8000/booking", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          selectedPackage: modifiedSelectedPackage,
+          title: selectedPackage.title,
+          price: selectedPackage.price,
           cardNumber,
           validityDate,
           address,
@@ -99,7 +95,7 @@ const Payment = () => {
         p={6}
         borderWidth={1}
         borderRadius={8}
-        boxShadow="lg"
+        boxShadow="rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset"
         mb={10} // Add margin bottom
       >
         <Heading as="h2" mb={6}>
@@ -108,48 +104,76 @@ const Payment = () => {
         {selectedPackage && (
           <Box>
             <Heading as="h3" size="md">
-              <span style={{ color: "green" }}>Package Details</span>
+              <span style={{ color: "red" }}>Package Details</span>
             </Heading>
             <p>
-              <span style={{ color: "green" }}>{selectedPackage.title}</span>
+              <span style={{ color: "blue", fontWeight: "bold" }}>
+                Package/Destination Name: {selectedPackage.title}
+              </span>
             </p>
             <p>
-              <span style={{ color: "green" }}>
+              <span style={{ color: "blue", fontWeight: "bold" }}>
                 Price: ₹{selectedPackage.price}
               </span>
             </p>
           </Box>
         )}
         <FormControl mt={4}>
-          <FormLabel>Card Number (12 digits)</FormLabel>
+          <FormLabel>
+            <span style={{ color: "red" }}>Card Number (12 digits)</span>
+          </FormLabel>
           <Input
             type="text"
             value={cardNumber}
             onChange={(e) => setCardNumber(e.target.value)}
+            style={{
+              color: "darkred",
+              fontWeight: "bold",
+            }}
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Validity Date</FormLabel>
+          <FormLabel>
+            <span style={{ color: "red" }}>Validity Date</span>
+          </FormLabel>
           <Input
             type="date"
             value={validityDate}
             onChange={(e) => setValidityDate(e.target.value)}
+            style={{
+              color: "darkred",
+              fontWeight: "bold",
+            }}
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Address (Minimum 10 characters)</FormLabel>
+          <FormLabel>
+            <span style={{ color: "red" }}>
+              Address (Minimum 10 characters)
+            </span>
+          </FormLabel>
           <Input
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+            style={{
+              color: "darkred",
+              fontWeight: "bold",
+            }}
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Email</FormLabel>
+          <FormLabel>
+            <span style={{ color: "red" }}>Email</span>
+          </FormLabel>
           <Input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={{
+              color: "darkred",
+              fontWeight: "bold",
+            }}
           />
         </FormControl>
         <Button
