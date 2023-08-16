@@ -31,11 +31,53 @@ const Payment = () => {
     // Perform validation checks here
     if (
       cardNumber.length !== 12 ||
+      !validityDate ||
       new Date(validityDate) <= new Date() ||
       address.length < 10 ||
-      email === ""
+      !/^\S+@\S+\.\S+$/.test(email)
     ) {
       // Display error message or handle validation
+      if (cardNumber.length !== 12) {
+        toast({
+          title: "Invalid Card Number",
+          description: "Card number should be 12 characters long.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else if (!validityDate) {
+        toast({
+          title: "Invalid Validity Date",
+          description: "Please select a valid validity date.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else if (new Date(validityDate) <= new Date()) {
+        toast({
+          title: "Invalid Validity Date",
+          description: "Validity date must be in the future.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else if (address.length < 10) {
+        toast({
+          title: "Invalid Address",
+          description: "Address should be at least 10 characters long.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+        toast({
+          title: "Invalid Email",
+          description: "Please enter a valid email address.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
       return;
     }
 
