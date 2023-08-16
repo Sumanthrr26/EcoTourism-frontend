@@ -18,6 +18,7 @@ const Payment = () => {
   const [address, setAddress] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [validityDate, setValidityDate] = useState("");
+  const [cvv, setCVV] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const toast = useToast(); // Initialize useToast
@@ -34,15 +35,16 @@ const Payment = () => {
       fullName.trim() === "" ||
       email.trim() === "" ||
       address.length < 10 ||
-      cardNumber.length !== 12 ||
+      cardNumber.length !== 16 ||
       !validityDate ||
-      new Date(validityDate) <= new Date()
+      new Date(validityDate) <= new Date() ||
+      cvv.length !== 3
     ) {
       // Display error message or handle validation
-      if (cardNumber.length !== 12) {
+      if (cardNumber.length !== 16) {
         toast({
           title: "Invalid Card Number",
-          description: "Card number should be 12 characters long.",
+          description: "Card number should be 16 characters long.",
           status: "error",
           duration: 3000,
           isClosable: true,
@@ -79,6 +81,14 @@ const Payment = () => {
           duration: 3000,
           isClosable: true,
         });
+      } else if (cvv.length !== 3) {
+        toast({
+          title: "Invalid CVV",
+          description: "CVV should be 3 characters long.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       }
       return;
     }
@@ -101,6 +111,7 @@ const Payment = () => {
           address,
           cardNumber,
           validityDate,
+          cvv,
         }),
       });
 
@@ -211,7 +222,7 @@ const Payment = () => {
         </FormControl>
         <FormControl mt={4}>
           <FormLabel>
-            <span style={{ color: "red" }}>Card Number (12 digits)</span>
+            <span style={{ color: "red" }}>Card Number (16 digits)</span>
           </FormLabel>
           <Input
             type="text"
@@ -231,6 +242,20 @@ const Payment = () => {
             type="date"
             value={validityDate}
             onChange={(e) => setValidityDate(e.target.value)}
+            style={{
+              color: "darkred",
+              fontWeight: "bold",
+            }}
+          />
+        </FormControl>
+        <FormControl mt={4}>
+          <FormLabel>
+            <span style={{ color: "red" }}>CVV (3 digits)</span>
+          </FormLabel>
+          <Input
+            type="password"
+            value={cvv}
+            onChange={(e) => setCVV(e.target.value)}
             style={{
               color: "darkred",
               fontWeight: "bold",
