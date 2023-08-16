@@ -13,10 +13,11 @@ import { useNavigate } from "react-router-dom";
 
 const Payment = () => {
   const [selectedPackage, setSelectedPackage] = useState(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [validityDate, setValidityDate] = useState("");
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const toast = useToast(); // Initialize useToast
@@ -30,11 +31,12 @@ const Payment = () => {
   const handleSubmit = async () => {
     // Perform validation checks here
     if (
+      fullName.trim() === "" ||
+      email.trim() === "" ||
+      address.length < 10 ||
       cardNumber.length !== 12 ||
       !validityDate ||
-      new Date(validityDate) <= new Date() ||
-      address.length < 10 ||
-      !/^\S+@\S+\.\S+$/.test(email)
+      new Date(validityDate) <= new Date()
     ) {
       // Display error message or handle validation
       if (cardNumber.length !== 12) {
@@ -94,10 +96,11 @@ const Payment = () => {
         body: JSON.stringify({
           title: selectedPackage.title,
           price: selectedPackage.price,
+          fullName,
+          email,
+          address,
           cardNumber,
           validityDate,
-          address,
-          email,
         }),
       });
 
@@ -141,12 +144,14 @@ const Payment = () => {
         mb={10} // Add margin bottom
       >
         <Heading as="h2" mb={6}>
-          Booking Details
+          Proceed with payment..
         </Heading>
         {selectedPackage && (
           <Box>
             <Heading as="h3" size="md">
-              <span style={{ color: "red" }}>Package Details</span>
+              <span style={{ color: "red" }}>
+                Package Details for confirmation:
+              </span>
             </Heading>
             <p>
               <span style={{ color: "blue", fontWeight: "bold" }}>
@@ -162,12 +167,12 @@ const Payment = () => {
         )}
         <FormControl mt={4}>
           <FormLabel>
-            <span style={{ color: "red" }}>Card Number (12 digits)</span>
+            <span style={{ color: "red" }}>Full Name</span>
           </FormLabel>
           <Input
             type="text"
-            value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
             style={{
               color: "darkred",
               fontWeight: "bold",
@@ -176,12 +181,12 @@ const Payment = () => {
         </FormControl>
         <FormControl mt={4}>
           <FormLabel>
-            <span style={{ color: "red" }}>Validity Date</span>
+            <span style={{ color: "red" }}>Email</span>
           </FormLabel>
           <Input
-            type="date"
-            value={validityDate}
-            onChange={(e) => setValidityDate(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             style={{
               color: "darkred",
               fontWeight: "bold",
@@ -206,12 +211,26 @@ const Payment = () => {
         </FormControl>
         <FormControl mt={4}>
           <FormLabel>
-            <span style={{ color: "red" }}>Email</span>
+            <span style={{ color: "red" }}>Card Number (12 digits)</span>
           </FormLabel>
           <Input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+            style={{
+              color: "darkred",
+              fontWeight: "bold",
+            }}
+          />
+        </FormControl>
+        <FormControl mt={4}>
+          <FormLabel>
+            <span style={{ color: "red" }}>Validity Date</span>
+          </FormLabel>
+          <Input
+            type="date"
+            value={validityDate}
+            onChange={(e) => setValidityDate(e.target.value)}
             style={{
               color: "darkred",
               fontWeight: "bold",
