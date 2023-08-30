@@ -54,7 +54,7 @@ Here are some screenshots of the Flipkart clone website:
 
 ![Package List](Images/packages.png)
 
-![Destinations List](Images/destionations.png)
+![Destinations List](Images/destinations.png)
 
 
 
